@@ -20,7 +20,7 @@ public class Day1 {
 		int larger = 0;
 
 		int last = sumLast3(lines, 2);
-		;
+
 		for (int i = 3; i < lines.size(); i++) {
 
 			int s = sumLast3(lines, i);
