@@ -23,6 +23,7 @@ public class Day2 {
 
 		int x = 0;
 		int d = 0;
+		int aim = 0;
 
 		for (String line : lines) {
 			String[] course = line.split(" ");
@@ -33,12 +34,13 @@ public class Day2 {
 			switch (command) {
 			case "forward":
 				x += s;
+				d += aim * s;
 				break;
 			case "down":
-				d += s;
+				aim += s;
 				break;
 			case "up":
-				d -= s;
+				aim -= s;
 				break;
 			default:
 				throw new IllegalStateException("unsupported operation " + line);
