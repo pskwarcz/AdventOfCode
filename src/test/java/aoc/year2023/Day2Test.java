@@ -10,14 +10,20 @@ import aoc.Utils;
 
 public class Day2Test {
 
-	Day2 sut = new Day2();
-
 	@Test
 	public void test() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input2");
 
-		int res = sut.process(lines);
+		int res = new Day2().process(lines);
 		assertEquals(res, 8);
+	}
+
+	@Test
+	public void part2() {
+		List<String> lines = Utils.readFile("/aoc/year2023/input2");
+
+		long res = new Day2b().process(lines);
+		assertEquals(res, 2286);
 	}
 
 }
