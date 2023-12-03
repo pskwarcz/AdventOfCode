@@ -27,8 +27,8 @@ public class Day3b {
 
 	long process(List<String> lines) {
 
-		char[][] engine = load(lines);
-		Utils.print(engine);
+		char[][] engine = Utils.toMatrix(lines);
+		Utils.printMatrix(engine);
 
 		long sum = countNumbers(engine);
 
@@ -121,18 +121,6 @@ public class Day3b {
 		char c = engine[y][x];
 
 		return !Character.isDigit(c) && c != '.';
-	}
-
-	private char[][] load(List<String> lines) {
-		int xSize = lines.get(0).length();
-		int ySize = lines.size();
-		char[][] e = new char[ySize][xSize];
-		int y = 0;
-		for (String line : lines) {
-			e[y] = line.toCharArray();
-			y++;
-		}
-		return e;
 	}
 
 }

@@ -14,13 +14,25 @@ public class Utils {
 		return br.lines().collect(Collectors.toList());
 	}
 
-	public static void print(char[][] t) {
+	public static void printMatrix(char[][] t) {
 		for (char[] row : t) {
 			for (char c : row) {
 				System.out.print(c);
 			}
 			System.out.println();
 		}
+	}
+
+	public static char[][] toMatrix(List<String> lines) {
+		int xSize = lines.get(0).length();
+		int ySize = lines.size();
+		char[][] e = new char[ySize][xSize];
+		int y = 0;
+		for (String line : lines) {
+			e[y] = line.toCharArray();
+			y++;
+		}
+		return e;
 	}
 
 }
