@@ -20,10 +20,10 @@ public class Day3Test {
 
 	@Test
 	public void part2() {
-		List<String> lines = Utils.readFile("/aoc/year2023/input2");
+		List<String> lines = Utils.readFile("/aoc/year2023/input3");
 
-		long res = new Day2b().process(lines);
-		assertEquals(res, 2286);
+		long res = new Day3b().process(lines);
+		assertEquals(res, 467835);
 	}
 
 }
