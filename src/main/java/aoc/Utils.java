@@ -14,4 +14,13 @@ public class Utils {
 		return br.lines().collect(Collectors.toList());
 	}
 
+	public static void print(char[][] t) {
+		for (char[] row : t) {
+			for (char c : row) {
+				System.out.print(c);
+			}
+			System.out.println();
+		}
+	}
+
 }
