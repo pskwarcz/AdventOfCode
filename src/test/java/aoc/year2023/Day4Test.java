@@ -22,8 +22,8 @@ public class Day4Test {
 	public void part2() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input4");
 
-		long res = new Day4().process(lines);
-		assertEquals(res, 467835);
+		long res = new Day4b().process(lines);
+		assertEquals(res, 30);
 	}
 
 }
