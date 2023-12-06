@@ -35,4 +35,14 @@ public class Utils {
 		return e;
 	}
 
+	public static long[] toNumbers(String[] src) {
+		long[] n = new long[src.length];
+		int i = 0;
+		for (String s : src) {
+			n[i] = Long.parseLong(s);
+			i++;
+		}
+		return n;
+	}
+
 }
