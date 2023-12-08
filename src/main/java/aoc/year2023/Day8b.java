@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import aoc.Utils;
@@ -43,6 +44,8 @@ public class Day8b {
 		instructions = it.next().toCharArray();
 		it.next(); // empty line
 		nodes = readNodes(it);
+		Node.linkNodes(nodes);
+
 		System.out.println(nodes);
 
 		current = findEndsWith(nodes, "A");
@@ -59,7 +62,7 @@ public class Day8b {
 
 		int tidx = 0;
 		for (String c : current) {
-			pawns[tidx] = new Pawn(c, tidx);
+			pawns[tidx] = new Pawn(nodes.get(c), tidx);
 			tidx++;
 		}
 
@@ -92,17 +95,16 @@ public class Day8b {
 	}
 
 	class Pawn implements Runnable {
-		int id;
-		long step = 0;
-		String current;
-		Node n;
-		int i = 0;
+		private int id;
+		private long step = 0;
+		private Node current;
+
+		private int i = 0;
 		private long lastZ = 0;
 
-		public Pawn(String current, int id) {
+		public Pawn(Node current, int id) {
 			this.current = current;
 			this.id = id;
-			n = nodes.get(current);
 		}
 
 		@Override
@@ -157,7 +159,6 @@ public class Day8b {
 
 				if (lastZ < result.getMax()) {
 					// System.out.println(id + " max not reached, continue max = " +
-					// result.getMax());
 					return true;
 				}
 
@@ -176,13 +177,12 @@ public class Day8b {
 		}
 
 		boolean isAtZ() {
-			return current.endsWith("Z");
+			return current.isZ();
 		}
 
 		void goToNext() {
 			char instr = instructions[i];
-			current = n.getNext(instr);
-			n = nodes.get(current);
+			current = current.getNext(instr);
 			step++;
 			i = (i + 1) % instructions.length;
 
@@ -206,7 +206,7 @@ public class Day8b {
 			String key = l[0].trim();
 			String left = l[1].split(",")[0].split("\\(")[1];
 			String right = l[1].split(",")[1].trim().split("\\)")[0];
-			nodes.put(key, new Node(left, right));
+			nodes.put(key, new Node(key, left, right));
 		}
 		return nodes;
 	}
@@ -214,13 +214,33 @@ public class Day8b {
 }
 
 class Node {
-	String left;
-	String right;
 
-	public Node(String left, String right) {
+	private String left;
+	private String right;
+	private String name;
+	private Node l;
+	private Node r;
+	boolean isZ;
+
+	public Node(String name, String left, String right) {
 		super();
+		this.name = name;
 		this.left = left;
 		this.right = right;
+		isZ = name.endsWith("Z");
+	}
+
+	public static void linkNodes(Map<String, Node> nodes) {
+		for (Entry<String, Node> en : nodes.entrySet()) {
+			Node n = en.getValue();
+			n.name = en.getKey();
+			n.l = nodes.get(n.left);
+			n.r = nodes.get(n.right);
+		}
+	}
+
+	public boolean isZ() {
+		return isZ;
 	}
 
 	@Override
@@ -234,11 +254,11 @@ class Node {
 		return builder.toString();
 	}
 
-	public String getNext(char ins) {
+	public Node getNext(char ins) {
 		if (ins == 'L') {
-			return left;
+			return l;
 		} else {
-			return right;
+			return r;
 		}
 	}
 
