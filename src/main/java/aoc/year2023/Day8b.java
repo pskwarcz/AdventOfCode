@@ -1,10 +1,12 @@
 package aoc.year2023;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import aoc.Utils;
@@ -30,18 +32,21 @@ public class Day8b {
 	}
 
 	static List<String> current;
-	static List<String> ends;
 	static char[] instructions;
 	static Map<String, Node> nodes;
-	Pawn[] pawns;
+	static Pawn[] pawns;
 	Thread[] threads;
 
 	Result result = new Result();
+
+	static int instrSize;
 
 	long process(List<String> lines) throws InterruptedException {
 		Iterator<String> it = lines.iterator();
 
 		instructions = it.next().toCharArray();
+		instrSize = instructions.length;
+		System.out.println("instr size: " + instrSize);
 		it.next(); // empty line
 		nodes = readNodes(it);
 		Node.linkNodes(nodes);
@@ -49,10 +54,8 @@ public class Day8b {
 		System.out.println(nodes);
 
 		current = findEndsWith(nodes, "A");
-		ends = findEndsWith(nodes, "Z");
 
 		System.out.println(current);
-		System.out.println(ends);
 
 		int size = current.size();
 		result.size = size;
@@ -67,11 +70,27 @@ public class Day8b {
 		}
 
 		runThreads();
+		long r = 1;
 		for (Pawn p : pawns) {
 			System.out.println(p);
+			r = lcm(r, p.step);
+			System.out.println("lcm: " + r);
 		}
+		System.out.println(r);
+		return r;
+	}
 
-		return result.getMax();
+	private static long lcm(long a, long b) {
+		return a * (b / gcd(a, b));
+	}
+
+	private static long gcd(long a, long b) {
+		while (b > 0) {
+			long temp = b;
+			b = a % b; // % is remainder
+			a = temp;
+		}
+		return a;
 	}
 
 	public void runThreads() throws InterruptedException {
@@ -85,7 +104,7 @@ public class Day8b {
 		for (Thread t : threads) {
 			t.join();
 		}
-		System.out.println("Round finished");
+		System.out.println("All threads finished");
 	}
 
 	public void duration(long steps, int size) {
@@ -98,9 +117,8 @@ public class Day8b {
 		private int id;
 		private long step = 0;
 		private Node current;
-
+		Set<Integer> interations = new HashSet<>();
 		private int i = 0;
-		private long lastZ = 0;
 
 		public Pawn(Node current, int id) {
 			this.current = current;
@@ -114,7 +132,7 @@ public class Day8b {
 			builder.append(id);
 			builder.append(", step=");
 			builder.append(step);
-			builder.append(", current=");
+			builder.append(", ");
 			builder.append(current);
 			builder.append("]");
 			return builder.toString();
@@ -122,74 +140,20 @@ public class Day8b {
 
 		@Override
 		public void run() {
-			boolean shouldContinue = true;
-			while (shouldContinue) {
-				// System.out.println(id + " STARTED step:" + step + " at z:" + current);
+			do {
 				goToNext();
-				while (!isAtZ()) {
-					goToNext();
-				}
-				saveLast();
-				// System.out.println(id + " FINISHED step:" + step + " at z:" + current);
-				try {
-					shouldContinue = shouldContinue();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			System.out.println(id + " TERMINATED step:" + step + " at z:" + current);
-		}
+			} while (!current.isZ());
 
-		private void saveLast() {
-			lastZ = step;
-		}
-
-		// wait for others or continue if there is larger result
-		boolean shouldContinue() throws InterruptedException {
-			synchronized (result) {
-				if (lastZ > result.getMax()) {
-					result.setMax(lastZ);
-
-					// System.out.println(id + " new end = " + result.getMax());
-					result.wait();
-					// System.out.println(id + " continue " + result.getMax());
-					return !result.allMatching();
-				}
-
-				if (lastZ < result.getMax()) {
-					// System.out.println(id + " max not reached, continue max = " +
-					return true;
-				}
-
-				if (result.isMatching(lastZ)) {
-					if (result.allMatching()) {
-						return false;
-					}
-
-					result.wait();
-					// System.out.println(id + " continue " + result.getMax());
-					return !result.allMatching();
-				}
-
-			}
-			return false;
-		}
-
-		boolean isAtZ() {
-			return current.isZ();
+			System.out.println(id + " Cycle length:" + step);
 		}
 
 		void goToNext() {
 			char instr = instructions[i];
 			current = current.getNext(instr);
 			step++;
-			i = (i + 1) % instructions.length;
-
-			if (step % 500000000 == 0) {
-				long end = System.currentTimeMillis();
-				long duration = end - start;
-				System.out.println(id + " c:" + step + " steps/ms " + step / duration);
+			i++;
+			if (i == instrSize) {
+				i = 0;
 			}
 		}
 
@@ -211,19 +175,28 @@ public class Day8b {
 		return nodes;
 	}
 
+	public static String pawnsToString() {
+		StringBuilder b = new StringBuilder();
+		b.append(" [");
+		for (Pawn p : pawns) {
+			b.append("\n\t" + p);
+		}
+		b.append("\t]");
+		return b.toString();
+	}
+
 }
 
 class Node {
 
-	private String left;
-	private String right;
-	private String name;
+	private final String name;
+	private final String left;
+	private final String right;
 	private Node l;
 	private Node r;
-	boolean isZ;
+	final boolean isZ;
 
 	public Node(String name, String left, String right) {
-		super();
 		this.name = name;
 		this.left = left;
 		this.right = right;
@@ -233,7 +206,6 @@ class Node {
 	public static void linkNodes(Map<String, Node> nodes) {
 		for (Entry<String, Node> en : nodes.entrySet()) {
 			Node n = en.getValue();
-			n.name = en.getKey();
 			n.l = nodes.get(n.left);
 			n.r = nodes.get(n.right);
 		}
@@ -246,11 +218,13 @@ class Node {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("(");
+		builder.append("Node [");
+		builder.append(name);
+		builder.append(" = (");
 		builder.append(left);
 		builder.append(", ");
 		builder.append(right);
-		builder.append(")");
+		builder.append(")]");
 		return builder.toString();
 	}
 
@@ -286,13 +260,18 @@ class Result {
 		}
 
 		matching++;
-		if (matching > 2) {
-			System.out.println(" Matching " + max + ":" + matching);
+		if (matching > 3) {
+			long end = System.currentTimeMillis();
+			long duration = end - Day8b.start;
+			System.out.println(
+					" Matching " + max + ":" + matching + " steps/ms " + max / duration + Day8b.pawnsToString());
 		}
+
 		if (matching == size) {
 			System.out.println("All matching! " + max);
 			notifyAll();
 		}
+
 		return true;
 	}
 
