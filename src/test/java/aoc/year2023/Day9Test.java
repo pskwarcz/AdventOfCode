@@ -22,8 +22,8 @@ public class Day9Test {
 	public void part2() throws InterruptedException {
 		List<String> lines = Utils.readFile("/aoc/year2023/input9.txt");
 
-		long res = new Day9().process(lines);
-		assertEquals(6, res);
+		long res = new Day9b().process(lines);
+		assertEquals(2, res);
 	}
 
 }
