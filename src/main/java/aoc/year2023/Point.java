@@ -3,13 +3,18 @@ package aoc.year2023;
 import java.util.Objects;
 
 public class Point {
-	int x;
-	int y;
+	final public int x;
+	final public int y;
 
 	public Point(int x, int y) {
 		super();
 		this.x = x;
 		this.y = y;
+	}
+
+	public Point(Point p) {
+		x = p.x;
+		y = p.y;
 	}
 
 	@Override
