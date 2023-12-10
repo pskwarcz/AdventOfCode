@@ -11,6 +11,8 @@ public class Day10b {
 	public static char replaceS;
 
 	public Day10b(char c) {
+		// TODO this can be calculated, but was easier to just find S on map and figure
+		// out to which letter should it be changed
 		replaceS = c;
 	}
 
