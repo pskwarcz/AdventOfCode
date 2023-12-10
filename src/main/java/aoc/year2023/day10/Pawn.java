@@ -1,5 +1,7 @@
 package aoc.year2023.day10;
 
+import java.util.HashSet;
+
 import aoc.year2023.Point;
 
 public class Pawn {
@@ -7,6 +9,7 @@ public class Pawn {
 	Tile p;
 	Tile prev;
 	char direction = '?';
+	HashSet<Point> path = new HashSet<>();
 
 	public Pawn(Map m) {
 		this.m = m;
@@ -15,12 +18,14 @@ public class Pawn {
 	}
 
 	private void moveTo(Point p) {
+		path.add(p);
 		moveTo(m.getTile(p));
 	}
 
 	private void moveTo(Tile t) {
 		prev = p;
-		System.out.println("going " + direction + " to " + t);
+		// System.out.println("going " + direction + " to " + t);
+
 		p = t;
 	}
 
@@ -84,7 +89,11 @@ public class Pawn {
 	}
 
 	public boolean isAtS() {
-		return p.isS();
+		return p.equals(m.s);
+	}
+
+	public int countEnclosed() {
+		return m.countEnclosed(path);
 	}
 
 }
