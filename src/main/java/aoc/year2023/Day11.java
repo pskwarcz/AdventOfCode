@@ -9,10 +9,16 @@ public class Day11 {
 
 	public static void main(String[] args) {
 		long start = System.currentTimeMillis();
-		new Day11().start();
+		new Day11(1000000).start();
 		long end = System.currentTimeMillis();
 		long duration = end - start;
 		System.out.println("\nTime[ms]: " + duration);
+	}
+
+	private int expansion;
+
+	public Day11(int expansion) {
+		this.expansion = expansion;
 	}
 
 	private void start() {
@@ -25,21 +31,26 @@ public class Day11 {
 
 	long process(List<String> lines) {
 		List<List<Character>> universe = loadUniverse(lines);
-		List<List<Character>> expanded = expand(universe);
-		print(expanded);
 
-		List<Point> stars = findStars(expanded);
+		print(universe);
+
+		List<Point> stars = findStars(universe);
+
 		System.out.println(stars);
-		int sum = 0;
+		long sum = 0;
 		for (int i = 0; i < stars.size(); i++) {
 			Point s = stars.get(i);
 			for (int x = i + 1; x < stars.size(); x++) {
 				Point to = stars.get(x);
 				int res = s.distanceTo(to);
 				// System.out.println("from " + s + " to " + to + " = " + res);
+				res += ((expansion - 1) * countEmptyColsBetween(universe, s.x, to.x));
+				res += ((expansion - 1) * countEmptyRowsBetween(universe, s.y, to.y));
+				// System.out.println("AFTER EXP: from " + s + " to " + to + " = " + res);
+
 				sum += res;
 			}
-			// System.out.println();
+//			System.out.println();
 		}
 
 		return sum;
@@ -61,29 +72,41 @@ public class Day11 {
 		return stars;
 	}
 
-	private List<List<Character>> expand(List<List<Character>> universe) {
-		List<List<Character>> expanded = new ArrayList<>();
+	int countEmptyColsBetween(List<List<Character>> universe, int from, int to) {
+		int c = 0;
 
-		for (List<Character> line : universe) {
-			expanded.add(new ArrayList<>(line));
+		if (from >= to) {
+			int to2 = to;
+			to = from;
+			from = to2;
+		}
+
+		for (int x = from + 1; x < to; x++) {
+			if (allEmpty(universe, x)) {
+				c++;
+			}
+		}
+		return c;
+	}
+
+	int countEmptyRowsBetween(List<List<Character>> universe, int from, int to) {
+		int c = 0;
+
+		if (from >= to) {
+			int to2 = to;
+			to = from;
+			from = to2;
+		}
+
+		for (int y = from + 1; y < to; y++) {
+			List<Character> line = universe.get(y);
 			if (!line.stream().filter(s -> !s.equals('.')).findFirst().isPresent()) {
-				expanded.add(new ArrayList<>(line));
+				c++;
 			}
 		}
 
-		int x = 0;
-		int cnt = universe.get(0).size();
-		for (int i = 0; i < cnt; i++) {
-			x++;
-			if (allEmpty(universe, i)) {
-				for (List<Character> e : expanded) {
-					e.add(x, '.');
-				}
-				x++;
-			}
-		}
-
-		return expanded;
+		// System.out.println("empty rows between " + from + " to " + to + " = " + c);
+		return c;
 	}
 
 	private boolean allEmpty(List<List<Character>> universe, int x) {

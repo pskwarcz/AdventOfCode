@@ -14,16 +14,24 @@ public class Day11Test {
 	public void part1() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input11.txt");
 
-		long res = new Day11().process(lines);
+		long res = new Day11(2).process(lines);
 		assertEquals(374, res);
 	}
 
 	@Test
-	public void part2() throws InterruptedException {
+	public void part2() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input11.txt");
 
-		long res = new Day11().process(lines);
+		long res = new Day11(10).process(lines);
 		assertEquals(1030, res);
+	}
+
+	@Test
+	public void part2b() {
+		List<String> lines = Utils.readFile("/aoc/year2023/input11.txt");
+
+		long res = new Day11(100).process(lines);
+		assertEquals(8410, res);
 	}
 
 }
