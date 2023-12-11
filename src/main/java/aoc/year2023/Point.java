@@ -45,4 +45,8 @@ public class Point {
 		return builder.toString();
 	}
 
+	public int distanceTo(Point to) {
+		return Math.abs(x - to.x) + Math.abs(y - to.y);
+	}
+
 }
