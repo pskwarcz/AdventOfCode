@@ -45,4 +45,14 @@ public class Utils {
 		return n;
 	}
 
+	public static int[] toIntegers(String[] src) {
+		int[] n = new int[src.length];
+		int i = 0;
+		for (String s : src) {
+			n[i] = Integer.parseInt(s);
+			i++;
+		}
+		return n;
+	}
+
 }
