@@ -52,11 +52,25 @@ public class Day12Test {
 	}
 
 	@Test
+	public void part2solutions2() {
+		List<String> lines = Utils.readFile("/aoc/year2023/input12.txt");
+
+		Day12b d = new Day12b();
+
+		assertEquals(1, d.countArrangements(lines.get(0)));
+		assertEquals(16384, d.countArrangements(lines.get(1)));
+		assertEquals(1, d.countArrangements(lines.get(2)));
+		assertEquals(16, d.countArrangements(lines.get(3)));
+		assertEquals(2500, d.countArrangements(lines.get(4)));
+		assertEquals(506250, d.countArrangements(lines.get(5)));
+	}
+
+	@Test
 	public void part2() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input12.txt");
 
-		long res = new Day12().process(lines);
-		assertEquals(21, res);
+		long res = new Day12b().process(lines);
+		assertEquals(525152, res);
 	}
 
 }
