@@ -73,4 +73,10 @@ public class Day12Test {
 		assertEquals(525152, res);
 	}
 
+	@Test
+	public void part2solutions2long() {
+		Day12b d = new Day12b();
+		assertEquals(2189421, d.countArrangements("???#???????????# 5,1,1,2,1"));
+	}
+
 }
