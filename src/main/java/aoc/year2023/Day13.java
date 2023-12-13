@@ -18,7 +18,7 @@ public class Day13 {
 		System.out.println("\nTime[ms]: " + duration);
 	}
 
-	private void start() {
+	void start() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input13.txt");
 
 		long result = process(lines);
@@ -27,18 +27,12 @@ public class Day13 {
 	}
 
 	long process(List<String> lines) {
-		Iterator<String> it = lines.iterator();
-		long sum = 0;
-		while (it.hasNext()) {
-			List<String> pattern = readPattern(it);
-			sum += reflectionNumber(pattern);
-			System.out.println("");
-		}
+		List<List<String>> patterns = readPatterns(lines);
 
-		return sum;
+		return patterns.stream().mapToLong(this::reflectionNumber).sum();
 	}
 
-	private long reflectionNumber(List<String> pattern) {
+	long reflectionNumber(List<String> pattern) {
 		for (String s : pattern) {
 			System.out.println(s);
 		}
@@ -58,7 +52,7 @@ public class Day13 {
 		return 0;
 	}
 
-	private boolean isVerticalReflection(List<String> pattern, int x) {
+	boolean isVerticalReflection(List<String> pattern, int x) {
 		for (String line : pattern) {
 			if (!isVerticalReflection(line, x)) {
 				return false;
@@ -67,7 +61,7 @@ public class Day13 {
 		return true;
 	}
 
-	private boolean isVerticalReflection(String line, int x) {
+	boolean isVerticalReflection(String line, int x) {
 		for (int i = 1; x - i >= 0 && x - 1 + i < line.length(); i++) {
 			if (line.charAt(x - i) != line.charAt(x - 1 + i)) {
 				return false;
@@ -76,7 +70,7 @@ public class Day13 {
 		return true;
 	}
 
-	private int horizontalReflection(List<String> pattern) {
+	int horizontalReflection(List<String> pattern) {
 		for (int y = 1; y < pattern.size(); y++) {
 			if (isHorizontalReflection(pattern, y)) {
 				System.out.println("h=" + y);
@@ -87,13 +81,23 @@ public class Day13 {
 	}
 
 	// y=4
-	private boolean isHorizontalReflection(List<String> pattern, int y) {
+	boolean isHorizontalReflection(List<String> pattern, int y) {
 		for (int i = 1; y - i >= 0 && y - 1 + i < pattern.size(); i++) {
 			if (!pattern.get(y - i).equals(pattern.get(y - 1 + i))) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	List<List<String>> readPatterns(List<String> lines) {
+		List<List<String>> patterns = new ArrayList<>();
+
+		Iterator<String> it = lines.iterator();
+		while (it.hasNext()) {
+			patterns.add(readPattern(it));
+		}
+		return patterns;
 	}
 
 	private List<String> readPattern(Iterator<String> it) {
