@@ -16,9 +16,7 @@ public class Day {
 
 	private void start() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input9.txt");
-
 		long result = process(lines);
-
 		System.out.println("\nresult: " + result);
 	}
 
