@@ -18,11 +18,10 @@ public class Day14Test {
 	}
 
 	@Test
-	public void part2() throws InterruptedException {
+	public void part2() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input14.txt");
-
-		long res = new Day14().process(lines);
-		assertEquals(400, res);
+		long res = new Day14b().process(lines);
+		assertEquals(64, res);
 	}
 
 }

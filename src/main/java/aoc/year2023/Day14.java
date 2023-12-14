@@ -23,16 +23,20 @@ public class Day14 {
 	long process(List<String> lines) {
 		print(lines);
 
-		while (moveRocks(lines)) {
-			// System.out.println();
-			// print(lines);
-		}
+		moveRocks(lines);
 
 		System.out.println();
 		print(lines);
 		long sum = calculateLoad(lines);
 		System.out.println("load: " + sum);
 		return sum;
+	}
+
+	void moveRocks(List<String> lines) {
+		while (moveRocksN(lines)) {
+			// System.out.println();
+			// print(lines);
+		}
 	}
 
 	private long calculateLoad(List<String> lines) {
@@ -53,21 +57,21 @@ public class Day14 {
 		return sum;
 	}
 
-	private void print(List<String> lines) {
+	void print(List<String> lines) {
 		for (String line : lines) {
 			System.out.println(line);
 		}
 
 	}
 
-	private boolean moveRocks(List<String> lines) {
+	boolean moveRocksN(List<String> lines) {
 		boolean moved = false;
 		for (int y = 0; y < lines.size() - 1; y++) {
 			for (int x = 0; x < lines.get(0).length(); x++) {
 				char c = lines.get(y).charAt(x);
 				char up = lines.get(y + 1).charAt(x);
 				if (c == '.' && up == 'O') {
-					moveRock(lines, y, x);
+					moveRock(lines, y + 1, x, y, x);
 					moved = true;
 				}
 			}
@@ -75,14 +79,14 @@ public class Day14 {
 		return moved;
 	}
 
-	private void moveRock(List<String> lines, int y, int x) {
+	void moveRock(List<String> lines, int fromY, int fromX, int y, int x) {
 		StringBuilder sb = new StringBuilder(lines.get(y));
 		sb.setCharAt(x, 'O');
 		lines.set(y, sb.toString());
 
-		sb = new StringBuilder(lines.get(y + 1));
-		sb.setCharAt(x, '.');
-		lines.set(y + 1, sb.toString());
+		sb = new StringBuilder(lines.get(fromY));
+		sb.setCharAt(fromX, '.');
+		lines.set(fromY, sb.toString());
 	}
 
 }
