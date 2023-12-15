@@ -11,6 +11,11 @@ import aoc.Utils;
 public class Day15Test {
 
 	@Test
+	public void hashTest() {
+		assertEquals(52, new Day15().hash("HASH"));
+	}
+
+	@Test
 	public void part1() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input15.txt");
 		long res = new Day15().process(lines);
@@ -20,13 +25,8 @@ public class Day15Test {
 	@Test
 	public void part2() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input15.txt");
-		long res = new Day15().process(lines);
-		assertEquals(64, res);
-	}
-
-	@Test
-	public void hashTest() {
-		assertEquals(52, new Day15().hash("HASH"));
+		long res = new Day15b().process(lines);
+		assertEquals(145, res);
 	}
 
 }

@@ -14,7 +14,7 @@ public class Day15 {
 		System.out.println("\nTime[ms]: " + duration);
 	}
 
-	private void start() {
+	void start() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input15.txt");
 		long result = process(lines);
 		System.out.println("\nresult: " + result);
