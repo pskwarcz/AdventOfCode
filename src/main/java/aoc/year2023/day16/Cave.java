@@ -24,7 +24,7 @@ public class Cave {
 		StringBuilder builder = new StringBuilder();
 		for (Tile[] row : tiles) {
 			for (Tile t : row) {
-				if (t.wasVisited()) {
+				if (t.isEnergized()) {
 					builder.append('#');
 				} else {
 					builder.append(t.c);
@@ -35,9 +35,9 @@ public class Cave {
 		return builder.toString();
 	}
 
-	public void startBeam() {
-		Tile t = tiles[0][0];
-		visit(t, '>');
+	public void startBeam(int x, int y, char c) {
+		Tile t = tiles[y][x];
+		visit(t, c);
 	}
 
 	private void visit(Tile t, char c) {
@@ -54,43 +54,35 @@ public class Cave {
 		for (char d : t.next(c)) {
 			switch (d) {
 			case '>':
-				if (t.x + 1 == tiles[0].length) {
-					System.out.println("wall");
-				} else {
+				if (t.x + 1 != tiles[0].length) {
 					visit(tiles[t.y][t.x + 1], d);
 				}
 				break;
 			case '<':
-				if (t.x == 0) {
-					System.out.println("wall");
-					break;
+				if (t.x != 0) {
+					visit(tiles[t.y][t.x - 1], d);
 				}
-				visit(tiles[t.y][t.x - 1], d);
 				break;
 			case '^':
-				if (t.y == 0) {
-					System.out.println("wall");
-					break;
+				if (t.y != 0) {
+					visit(tiles[t.y - 1][t.x], d);
 				}
-				visit(tiles[t.y - 1][t.x], d);
 				break;
 			case 'v':
-				if (t.y + 1 == tiles.length) {
-					System.out.println("wall");
-					break;
+				if (t.y + 1 != tiles.length) {
+					visit(tiles[t.y + 1][t.x], d);
 				}
-				visit(tiles[t.y + 1][t.x], d);
 				break;
 			}
 		}
 
 	}
 
-	public long countVisited() {
-		long n = 0;
+	public int countEnergized() {
+		int n = 0;
 		for (Tile[] row : tiles) {
 			for (Tile t : row) {
-				if (t.wasVisited()) {
+				if (t.isEnergized()) {
 					n++;
 				}
 			}

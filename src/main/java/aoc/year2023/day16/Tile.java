@@ -7,7 +7,7 @@ import aoc.year2023.Point;
 
 public class Tile extends Point {
 	char c;
-	Set<Character> incomeDirection = new HashSet<>();
+	Set<Character> entranceDirections = new HashSet<>();
 
 	public Tile(int x, int y, char c) {
 		super(x, y);
@@ -15,11 +15,11 @@ public class Tile extends Point {
 	}
 
 	public void add(char d) {
-		incomeDirection.add(d);
+		entranceDirections.add(d);
 	}
 
 	public boolean visited(char c) {
-		return incomeDirection.contains(c);
+		return entranceDirections.contains(c);
 	}
 
 	public Set<Character> next(char d) {
@@ -88,7 +88,7 @@ public class Tile extends Point {
 		return n;
 	}
 
-	public boolean wasVisited() {
-		return !incomeDirection.isEmpty();
+	public boolean isEnergized() {
+		return !entranceDirections.isEmpty();
 	}
 }

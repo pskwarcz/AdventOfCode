@@ -24,13 +24,11 @@ public class Day16 {
 		Cave c = new Cave(lines);
 		System.out.println(c);
 
-		c.startBeam();
+		c.startBeam(0, 0, '>');
 		System.out.println();
 
 		System.out.println(c);
-		long sum = c.countVisited();
-
-		return sum;
+		return c.countEnergized();
 	}
 
 }

@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import aoc.Utils;
 import aoc.year2023.day16.Day16;
+import aoc.year2023.day16.Day16b;
 
 public class Day16Test {
 
@@ -22,8 +23,8 @@ public class Day16Test {
 	@Test
 	public void part2() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input16.txt");
-		long res = new Day16().process(lines);
-		assertThat(res, is(0L));
+		long res = new Day16b().process(lines);
+		assertThat(res, is(51L));
 	}
 
 }
