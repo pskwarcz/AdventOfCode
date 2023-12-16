@@ -1,7 +1,9 @@
-package aoc.year2023.day16;
+package aoc.year2023;
 
 import java.util.List;
 import java.util.stream.Stream;
+
+import aoc.year2023.day16.Cave;
 
 public class Day16b extends Day16 {
 

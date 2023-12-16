@@ -8,8 +8,6 @@ import java.util.List;
 import org.junit.Test;
 
 import aoc.Utils;
-import aoc.year2023.day16.Day16;
-import aoc.year2023.day16.Day16b;
 
 public class Day16Test {
 

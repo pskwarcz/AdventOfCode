@@ -128,10 +128,6 @@ public class Day11 {
 
 	}
 
-	private List<Character> emptyLine() {
-		return new ArrayList<>();
-	}
-
 	private List<List<Character>> loadUniverse(List<String> lines) {
 		List<List<Character>> universe = new ArrayList<>();
 		for (String line : lines) {

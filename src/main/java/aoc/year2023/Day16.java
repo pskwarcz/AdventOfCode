@@ -1,8 +1,9 @@
-package aoc.year2023.day16;
+package aoc.year2023;
 
 import java.util.List;
 
 import aoc.Utils;
+import aoc.year2023.day16.Cave;
 
 public class Day16 {
 
