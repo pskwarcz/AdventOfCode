@@ -11,12 +11,12 @@ public class HeatMap {
 	static int xMax;
 	static int yMax;
 
-	public static int minMoves = 1;
-	public static int maxMoves = 3;
+	public static int minMoves;
+	public static int maxMoves;
 
 	Queue<Move> moves = new LinkedList<>();
 
-	public HeatMap(List<String> lines) {
+	public HeatMap(List<String> lines, int min, int max) {
 		yMax = lines.size();
 		xMax = lines.get(0).length();
 		m = new Node[yMax][xMax];
@@ -29,7 +29,12 @@ public class HeatMap {
 			}
 			y++;
 		}
+		minMoves = min;
+		maxMoves = max;
+	}
 
+	public HeatMap(List<String> lines) {
+		this(lines, 1, 3);
 	}
 
 	public void analyze() {

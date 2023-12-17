@@ -17,10 +17,7 @@ public class Day17b extends Day17 {
 
 	@Override
 	long process(List<String> lines) {
-		HeatMap.minMoves = 4;
-		HeatMap.maxMoves = 10;
-
-		HeatMap m = new HeatMap(lines);
+		HeatMap m = new HeatMap(lines, 4, 10);
 
 		m.analyze();
 		Node finish = m.getFinalNode();
