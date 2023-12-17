@@ -21,17 +21,12 @@ public class Node extends Point {
 	public boolean visit(String c, int heatLoss) {
 		int calculated = heatLoss + heat;
 
-		if (c.length() == 3) {
-			String s = c.substring(0, 2);
-			if (paths.getOrDefault(s, Integer.MAX_VALUE) <= calculated) {
-				return false;
-			}
-		}
-
-		if (c.length() >= 2) {
-			String s = c.substring(0, 1);
-			if (paths.getOrDefault(s, Integer.MAX_VALUE) <= calculated) {
-				return false;
+		for (int i = HeatMap.maxMoves; i > HeatMap.minMoves; i--) {
+			if (c.length() >= i) {
+				String s = c.substring(0, i - 1);
+				if (paths.getOrDefault(s, Integer.MAX_VALUE) <= calculated) {
+					return false;
+				}
 			}
 		}
 
@@ -43,69 +38,59 @@ public class Node extends Point {
 		return true;
 	}
 
-	public Set<String> getPossibleDirections(String c) {
+	private Set<String> getPossibleDirections(String c) {
 		Set<String> p = new HashSet<>();
-		switch (c) {
-		case ">":
-			p.add(">>");
-			p.add("v");
-			p.add("^");
-			break;
-		case ">>":
-			p.add(">>>");
-			p.add("v");
-			p.add("^");
-			break;
-		case ">>>":
-			p.add("v");
-			p.add("^");
-			break;
 
-		case "<":
-			p.add("<<");
-			p.add("v");
-			p.add("^");
-			break;
-		case "<<":
-			p.add("<<<");
-			p.add("v");
-			p.add("^");
-			break;
-		case "<<<":
-			p.add("v");
-			p.add("^");
-			break;
+		if (c.startsWith(">")) {
+			if (c.length() < HeatMap.minMoves) {
+				p.add(c.concat(">"));
+			} else if (c.length() < HeatMap.maxMoves) {
+				p.add(c.concat(">"));
+				p.add("v");
+				p.add("^");
+			} else {
+				p.add("v");
+				p.add("^");
+			}
+		}
 
-		case "v":
-			p.add("vv");
-			p.add("<");
-			p.add(">");
-			break;
-		case "vv":
-			p.add("vvv");
-			p.add("<");
-			p.add(">");
-			break;
-		case "vvv":
-			p.add("<");
-			p.add(">");
-			break;
+		if (c.startsWith("<")) {
+			if (c.length() < HeatMap.minMoves) {
+				p.add(c.concat("<"));
+			} else if (c.length() < HeatMap.maxMoves) {
+				p.add(c.concat("<"));
+				p.add("v");
+				p.add("^");
+			} else {
+				p.add("v");
+				p.add("^");
+			}
+		}
 
-		case "^":
-			p.add("^^");
-			p.add("<");
-			p.add(">");
-			break;
-		case "^^":
-			p.add("^^^");
-			p.add("<");
-			p.add(">");
-			break;
-		case "^^^":
-			p.add("<");
-			p.add(">");
-			break;
+		if (c.startsWith("v")) {
+			if (c.length() < HeatMap.minMoves) {
+				p.add(c.concat("v"));
+			} else if (c.length() < HeatMap.maxMoves) {
+				p.add(c.concat("v"));
+				p.add("<");
+				p.add(">");
+			} else {
+				p.add("<");
+				p.add(">");
+			}
+		}
 
+		if (c.startsWith("^")) {
+			if (c.length() < HeatMap.minMoves) {
+				p.add(c.concat("^"));
+			} else if (c.length() < HeatMap.maxMoves) {
+				p.add(c.concat("^"));
+				p.add("<");
+				p.add(">");
+			} else {
+				p.add("<");
+				p.add(">");
+			}
 		}
 
 		return p;
@@ -131,32 +116,48 @@ public class Node extends Point {
 
 	public Set<Move> getNextMoves(String c, int totalHeatLos) {
 		Set<String> possibleDirections = getPossibleDirections(c);
+
 		Set<Move> moves = new HashSet<>();
 		for (String d : possibleDirections) {
 			int nx = x;
 			int ny = y;
+
 			switch (d) {
 			case ">":
-			case ">>":
-			case ">>>":
-				nx++;
+				if (x + HeatMap.minMoves >= HeatMap.xMax) {
+					continue;
+				}
 				break;
 			case "<":
-			case "<<":
-			case "<<<":
-				nx--;
+				if (x - HeatMap.minMoves < 0) {
+					continue;
+				}
 				break;
 			case "v":
-			case "vv":
-			case "vvv":
-				ny++;
+				if (y + HeatMap.minMoves >= HeatMap.yMax) {
+					continue;
+				}
 				break;
 			case "^":
-			case "^^":
-			case "^^^":
-				ny--;
+				if (y - HeatMap.minMoves < 0) {
+					continue;
+				}
 				break;
 			}
+
+			if (d.startsWith(">")) {
+				nx++;
+			}
+			if (d.startsWith("<")) {
+				nx--;
+			}
+			if (d.startsWith("v")) {
+				ny++;
+			}
+			if (d.startsWith("^")) {
+				ny--;
+			}
+
 			if (nx < 0 || ny < 0 || ny >= HeatMap.yMax || nx >= HeatMap.xMax) {
 				continue;
 			}

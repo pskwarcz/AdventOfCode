@@ -10,6 +10,10 @@ public class HeatMap {
 	public Node[][] m;
 	static int xMax;
 	static int yMax;
+
+	public static int minMoves = 1;
+	public static int maxMoves = 3;
+
 	Queue<Move> moves = new LinkedList<>();
 
 	public HeatMap(List<String> lines) {
