@@ -62,7 +62,7 @@ public class Node extends Point {
 			break;
 
 		case "<":
-			p.add(">>");
+			p.add("<<");
 			p.add("v");
 			p.add("^");
 			break;
@@ -127,6 +127,42 @@ public class Node extends Point {
 
 	public long getMinHeat() {
 		return paths.values().stream().mapToInt(v -> v).min().getAsInt();
+	}
+
+	public Set<Move> getNextMoves(String c, int totalHeatLos) {
+		Set<String> possibleDirections = getPossibleDirections(c);
+		Set<Move> moves = new HashSet<>();
+		for (String d : possibleDirections) {
+			int nx = x;
+			int ny = y;
+			switch (d) {
+			case ">":
+			case ">>":
+			case ">>>":
+				nx++;
+				break;
+			case "<":
+			case "<<":
+			case "<<<":
+				nx--;
+				break;
+			case "v":
+			case "vv":
+			case "vvv":
+				ny++;
+				break;
+			case "^":
+			case "^^":
+			case "^^^":
+				ny--;
+				break;
+			}
+			if (nx < 0 || ny < 0 || ny >= HeatMap.yMax || nx >= HeatMap.xMax) {
+				continue;
+			}
+			moves.add(new Move(nx, ny, d, totalHeatLos + heat));
+		}
+		return moves;
 	}
 
 }

@@ -26,7 +26,7 @@ public class Day17 {
 		HeatMap m = new HeatMap(lines);
 
 		m.analyze();
-		Node finish = m.getFinish();
+		Node finish = m.getFinalNode();
 
 		System.out.println(finish);
 		return finish.getMinHeat();
