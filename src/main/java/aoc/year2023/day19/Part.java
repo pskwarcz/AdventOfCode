@@ -13,7 +13,7 @@ public class Part {
 			Integer v = Integer.valueOf(s.substring(2));
 			values.put(c, v);
 		}
-		System.out.println(values);
+		// System.out.println(values);
 	}
 
 	// e.g.: condition = "x>2662"

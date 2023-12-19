@@ -22,7 +22,7 @@ public class Day19 {
 		System.out.println("\nTime[ms]: " + duration);
 	}
 
-	private void start() {
+	void start() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input19.txt");
 		long result = process(lines);
 		System.out.println("\nresult: " + result);
@@ -48,7 +48,7 @@ public class Day19 {
 		return "A".equals(result);
 	}
 
-	private void load(List<String> lines) {
+	void load(List<String> lines) {
 		Iterator<String> it = lines.iterator();
 		String line = it.next();
 		while (!StringUtils.isBlank(line)) {
