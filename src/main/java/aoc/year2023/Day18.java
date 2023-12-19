@@ -24,8 +24,7 @@ public class Day18 {
 	long process(List<String> lines) {
 		Trench t = new Trench(lines);
 		System.out.println(t);
-		t.digOutInterior();
-		System.out.println(t);
+		// System.out.println(t);
 		return t.getVolume();
 	}
 
