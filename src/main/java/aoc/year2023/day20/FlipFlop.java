@@ -11,15 +11,20 @@ public class FlipFlop extends Module {
 	@Override
 	public void process() {
 		received = false;
-		if (in) {
-			toSend = false;
-			// System.out.println("\t" + name + " switched off");
-		} else {
-			toSend = true;
-			on = !on;
-			out = on;
+		while (!in.isEmpty()) {
+			boolean pulse = in.poll();
+			if (pulse) {
+				System.out.println("\t" + name + " inactive");
+			} else {
+				toSend = true;
+				on = !on;
+				if (!on) {
+					System.out.println("\t" + name + " switched off");
+				}
+				out.offer(on);
+			}
 		}
-		// System.out.println("Processed " + this);
+		System.out.println("Processed " + this);
 	}
 
 	@Override
@@ -33,6 +38,8 @@ public class FlipFlop extends Module {
 		builder.append(received);
 		builder.append(", toSend=");
 		builder.append(toSend);
+		builder.append(", out=");
+		builder.append(out);
 		builder.append(", nextModules=");
 		builder.append(nextModules);
 		builder.append("]");

@@ -1,0 +1,6 @@
+broadcaster -> gn
+%gn -> kb, tn
+ &kb -> tn, pf, gn
+ %tn -> pf
+  %nm -> gt
+  %pf -> gd

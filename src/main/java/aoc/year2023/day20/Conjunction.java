@@ -1,7 +1,9 @@
 package aoc.year2023.day20;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 public class Conjunction extends Module {
 
@@ -15,10 +17,13 @@ public class Conjunction extends Module {
 		memory.put(name, Boolean.FALSE);
 	}
 
+	Queue<String> from = new LinkedList<>();
+
 	@Override
 	public void acceptPulse(boolean pulse, String from) {
 		super.acceptPulse(pulse, from);
-		memory.put(from, pulse);
+		this.from.offer(from);
+
 	}
 
 	@Override
@@ -27,10 +32,14 @@ public class Conjunction extends Module {
 		if (memory.isEmpty()) {
 			throw new IllegalStateException("cannnot be empty");
 		}
-		out = memory.values().contains(Boolean.FALSE);
-		toSend = true;
-		System.out.println("Processed in:" + in + " " + this);
-		// memory.clear();
+		while (!in.isEmpty()) {
+			boolean pulse = in.poll();
+			memory.put(from.poll(), pulse);
+			System.out.println("\t" + name + ": t memory:" + memory);
+			out.offer(memory.values().contains(Boolean.FALSE));
+			toSend = true;
+		}
+		// System.out.println("\t\t" + name + " ---" + toPulse(out) + "--->");
 	}
 
 	@Override
@@ -41,6 +50,8 @@ public class Conjunction extends Module {
 		builder.append(name);
 		builder.append(", memory=");
 		builder.append(memory);
+		builder.append(", out=");
+		builder.append(out);
 		builder.append(", received=");
 		builder.append(received);
 		builder.append(", toSend=");

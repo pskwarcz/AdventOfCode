@@ -8,6 +8,12 @@ public class Output extends Module {
 	}
 
 	@Override
+	public void acceptPulse(boolean pulse, String from) {
+		super.acceptPulse(pulse, from);
+		in.clear();
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Output [name=");

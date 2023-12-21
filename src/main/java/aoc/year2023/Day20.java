@@ -22,18 +22,26 @@ public class Day20 {
 		System.out.println("\nresult: " + result);
 	}
 
+	static int i;
+
 	long process(List<String> lines) {
 
 		Machine m = new Machine(lines);
 
-		for (int i = 0; i < 1000; i++) {
+		long lowSum = 0;
+		long highSum = 0;
+		for (i = 0; i < 1000; i++) {
+			// System.out.println();
 			System.out.println(i);
 			m.pressButton();
+			// System.out.println(
+			// i + " low sum=" + (Module.lowCounter - lowSum) + " high sum=" +
+			// (Module.highCounter - highSum));
+			lowSum = Module.lowCounter;
+			highSum = Module.highCounter;
 		}
 
-		long lowSum = Module.lowCounter;
-		long highSum = Module.highCounter;
-		System.out.println("low sum=" + lowSum + " high sum=" + highSum);
+		System.out.println("\nlow sum=" + lowSum + " high sum=" + highSum);
 
 		return lowSum * highSum;
 	}

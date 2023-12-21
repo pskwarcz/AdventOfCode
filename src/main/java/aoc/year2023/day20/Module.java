@@ -1,9 +1,11 @@
 package aoc.year2023.day20;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 
 public abstract class Module {
 
@@ -16,9 +18,8 @@ public abstract class Module {
 	boolean received = false;
 	boolean toSend = false;
 
-	boolean in;
-	String from;
-	boolean out;
+	Queue<Boolean> in = new LinkedList<>();
+	Queue<Boolean> out = new LinkedList<>();
 
 	List<String> nextModules = new ArrayList<>();
 
@@ -54,23 +55,33 @@ public abstract class Module {
 		} else {
 			lowCounter++;
 		}
+		this.in.offer(pulse);
 		received = true;
-		this.in = pulse;
-		this.from = from;
 		// System.out.println("\t" + " received: " + (in ? "high " : "low ") + this);
+	}
+
+	public String toPulse(boolean value) {
+		return value ? "high" : "low-";
 	}
 
 	abstract void process();
 
-	final void sendPulse() {
+	void sendPulse() {
 		if (!toSend) {
-			return;
+			throw new IllegalStateException("should not happen send when toSend false" + this);
 		}
-		for (Module n : next) {
-			System.out.println(c + name + " -" + (out ? "high" : "low") + "-> " + n.name);
-			n.acceptPulse(out, name);
+		while (!out.isEmpty()) {
+			boolean pulse = out.poll();
+			for (Module n : next) {
+				printSend(pulse, n.name);
+				n.acceptPulse(pulse, name);
+			}
 		}
 		toSend = false;
+	}
+
+	void printSend(boolean pulse, String target) {
+		System.out.println(c + name + " -" + (pulse ? "high" : "low") + "-> " + target);
 	}
 
 	public void join(Map<String, Module> modules) {
