@@ -21,8 +21,8 @@ public class Day22Test {
 	@Test
 	public void part2() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input22t.txt");
-		long res = new Day22().process(lines);
-		assertThat(res, is(167409079868000L));
+		long res = new Day22b().process(lines);
+		assertThat(res, is(7L));
 	}
 
 }

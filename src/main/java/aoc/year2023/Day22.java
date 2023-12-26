@@ -17,7 +17,7 @@ public class Day22 {
 		System.out.println("\nTime[ms]: " + duration);
 	}
 
-	private void start() {
+	void start() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input22.txt");
 		long result = process(lines);
 		System.out.println("\nresult: " + result);
@@ -37,7 +37,7 @@ public class Day22 {
 		return sum;
 	}
 
-	private Set<Brick> settleAll(TreeSet<Brick> bricks) {
+	Set<Brick> settleAll(TreeSet<Brick> bricks) {
 		TreeSet<Brick> settled = new TreeSet<>();
 		for (Brick b : bricks) {
 			b.settle(settled);
@@ -46,7 +46,7 @@ public class Day22 {
 		return settled;
 	}
 
-	private TreeSet<Brick> loadBricks(List<String> lines) {
+	TreeSet<Brick> loadBricks(List<String> lines) {
 		TreeSet<Brick> bricks = new TreeSet<Brick>();
 		for (String line : lines) {
 			bricks.add(new Brick(line));

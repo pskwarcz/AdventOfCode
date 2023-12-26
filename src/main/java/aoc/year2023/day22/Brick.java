@@ -11,6 +11,8 @@ public class Brick implements Comparable<Brick> {
 	Point3D a;
 	Point3D b;
 
+	public boolean desintegrated = false;
+
 	Set<Brick> supports = new HashSet<>();
 	Set<Brick> settledOn = new HashSet<>();
 
@@ -161,9 +163,34 @@ public class Brick implements Comparable<Brick> {
 
 			}
 		}
-		System.out.println("Brick " + this + " settled on : " + support);
+		// System.out.println("Brick " + this + " settled on : " + support);
 		setLevel(maxY + 1);
 		settleOn(support);
+	}
+
+	/**
+	 * @return number of bricks that will fall if this brick will be desintegrated
+	 */
+	public int chainReaction() {
+		desintegrated = true;
+		int sum = 0;
+		for (Brick b : supports) {
+			if (b.allBelowDesintegrated()) {
+				sum++;
+				sum += b.chainReaction();
+			}
+		}
+
+		return sum;
+	}
+
+	private boolean allBelowDesintegrated() {
+		for (Brick below : settledOn) {
+			if (!below.desintegrated) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
