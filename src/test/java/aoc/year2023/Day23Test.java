@@ -19,10 +19,24 @@ public class Day23Test {
 	}
 
 	@Test
+	public void part1real() {
+		List<String> lines = Utils.readFile("/aoc/year2023/input23.txt");
+		long res = new Day23().process(lines);
+		assertThat(res, is(2310L));
+	}
+
+	@Test
 	public void part2() {
 		List<String> lines = Utils.readFile("/aoc/year2023/input23t.txt");
-		long res = new Day23().process(lines);
-		assertThat(res, is(7L));
+		long res = new Day23b().process(lines);
+		assertThat(res, is(154L));
+	}
+
+	@Test
+	public void part2real() {
+		List<String> lines = Utils.readFile("/aoc/year2023/input23.txt");
+		long res = new Day23b().process(lines);
+		assertThat(res, is(6738L));
 	}
 
 }
