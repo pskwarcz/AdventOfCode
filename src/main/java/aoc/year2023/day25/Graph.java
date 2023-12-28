@@ -6,14 +6,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.Stream.Builder;
 
-public class Graph {
+public class Graph implements Cloneable {
 
-	Map<String, Component> components = new HashMap<>();
+	public Map<String, Component> components = new HashMap<>();
 
 	List<Edge> edges = new ArrayList<>();
 
@@ -28,13 +30,12 @@ public class Graph {
 			Component c = components.get(line.split(":")[0]);
 			for (String name : line.split(":\\s")[1].split("\\s")) {
 				Component w = components.get(name);
-				c.wireWith(w);
-				edges.add(new Edge(c.name, w.name));
+				Edge e = c.createNewEdge(w);
+				edges.add(e);
 			}
 		}
-		components.values().stream().forEach(n -> System.out.println(n));
-
-		edges.stream().forEach(n -> System.out.println(n));
+		// components.values().stream().forEach(n -> System.out.println(n));
+		// edges.stream().forEach(n -> System.out.println(n));
 	}
 
 	@Override
@@ -43,13 +44,18 @@ public class Graph {
 		builder.append("Graph {\n");
 		components.values().forEach(c -> builder.append(c).append("\n"));
 		builder.append("]");
+
+		builder.append("edges: [");
+		edges.stream().forEach(e -> builder.append(e).append("\n"));
+		builder.append("]");
 		return builder.toString();
 	}
 
-	public void dfs(Component v, Set<Component> visited, Collection<Edge> edgesToCut) {
+	private void dfs(Component v, Set<Component> visited, Collection<Edge> edgesToCut) {
 		visited.add(v);
-		for (Component u : v.connections) {
-			if (edgesToCut.contains(new Edge(u.name, v.name))) {
+		for (Edge e : v.connections) {
+			Component u = e.getSecond(v);
+			if (edgesToCut.contains(e)) {
 				continue;
 			}
 			if (!visited.contains(u)) {
@@ -94,7 +100,7 @@ public class Graph {
 
 	static int n = 0;
 
-	public Integer cutAndGetSize(Collection<Edge> edgesToCut) {
+	private Integer cutAndGetSize(Collection<Edge> edgesToCut) {
 		Component c = components.values().iterator().next();
 		Set<Component> visited = new HashSet<>();
 		dfs(c, visited, edgesToCut);
@@ -104,9 +110,53 @@ public class Graph {
 		}
 		int i = visited.size();
 		if (i > 1 && i < components.size()) {
-			System.out.println("solution:" + edgesToCut);
+			System.out.println("solution:" + edgesToCut + "griuo size: " + i);
 		}
 		return i;
+	}
+
+	public Optional<Integer> karger(int cutSize, int targetSize) {
+		Random random = new Random();
+		Component c;
+		do {
+			int x = random.nextInt(edges.size());
+			c = contract(edges.get(x));
+			removeSelfLoops(c);
+		} while (components.size() > targetSize);
+		if (edges.size() == cutSize) {
+			return Optional.of(c.size);
+		}
+		return Optional.empty();
+	}
+
+	private void removeSelfLoops(Component c) {
+		for (Edge e : c.removeSelfLoops()) {
+			edges.remove(e);
+		}
+	}
+
+	Component contract(Edge e) {
+		Component a = e.getA();
+		Component b = e.getB();
+		Component c = new Component(a.name + b.name);
+		c.size = a.size + b.size;
+
+		edges.remove(e);
+		e.unlink();
+
+		reconnect(a, c);
+		reconnect(b, c);
+
+		components.remove(a.name);
+		components.remove(b.name);
+		components.put(c.name, c);
+		return c;
+	}
+
+	private void reconnect(Component o, Component n) {
+		for (Edge e : new ArrayList<>(o.connections)) {
+			e.replace(o, n);
+		}
 	}
 
 }

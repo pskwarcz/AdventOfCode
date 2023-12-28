@@ -1,27 +1,37 @@
 package aoc.year2023.day25;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Component {
 
+	int size = 1;
 	final String name;
-	Set<Component> connections = new HashSet<>();
+
+	List<Edge> connections = new ArrayList<>();
 
 	public Component(String name) {
 		this.name = name;
 	}
 
-	public void wireWith(Component c) {
-		connections.add(c);
-		c.connections.add(this);
+	public Edge createNewEdge(Component c) {
+		Edge e = new Edge(this, c);
+		connections.add(e);
+		c.connections.add(e);
+		return e;
 	}
 
-	public void disconnect(Component c) {
-		connections.remove(c);
-		c.connections.remove(this);
+	public void attach(Edge e) {
+		connections.add(e);
+	}
+
+	public void dettach(Edge e) {
+		if (!connections.remove(e)) {
+			throw new IllegalStateException("Component does nothave this edge" + this + " e:" + e);
+		}
 	}
 
 	@Override
@@ -46,10 +56,25 @@ public class Component {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Component [");
 		builder.append(name);
-		builder.append(": ");
+		builder.append("(");
+		builder.append(size);
+		builder.append(")");
 		builder.append(connections.stream().map(c -> c.name).collect(Collectors.toSet()));
 		builder.append("]");
 		return builder.toString();
+	}
+
+	public List<Edge> removeSelfLoops() {
+		List<Edge> toRemove = new ArrayList<>();
+		Iterator<Edge> it = connections.iterator();
+		while (it.hasNext()) {
+			Edge e = it.next();
+			if (e.isSelfLoop()) {
+				it.remove();
+				toRemove.add(e);
+			}
+		}
+		return toRemove;
 	}
 
 }
