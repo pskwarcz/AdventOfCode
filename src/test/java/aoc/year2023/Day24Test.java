@@ -36,7 +36,7 @@ public class Day24Test {
 		Hailstone.max = 27L;
 		List<String> lines = Utils.readFile("/aoc/year2023/input24t.txt");
 		long res = new Day24().process(lines);
-		assertThat(res, is(154L));
+		assertThat(res, is(47L));
 	}
 
 	@Test
