@@ -41,8 +41,8 @@ public class Day19Test {
 		assertThat(res, not(75743050454221L));
 		assertThat(res, not(138672802425232L));
 		assertThat(res, not(138112728734123L));
-
-		assertThat(res, is(-1L));
+		assertThat(res, not(137552655043014L));
+		assertThat(res, is(138625360533574L));
 	}
 
 }

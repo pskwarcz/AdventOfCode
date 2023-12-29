@@ -34,18 +34,6 @@ public class XMASCondition implements Comparable<XMASCondition> {
 		// System.out.println(" result = " + conditions);
 	}
 
-	private void or(Condition r) throws ConditionNotPossible {
-		// System.out.print("adding " + r + " to " + c);
-		Condition existing = get(r.c);
-		Condition newCondition = existing.or(r);
-		System.out.println("condition " + existing + " replaced with " + newCondition);
-		conditions.remove(existing);
-		conditions.add(newCondition);
-
-		// TODO or maybe if not exist simply put this:
-		// conditions.add(r);
-	}
-
 	public static XMASCondition mergeOr(XMASCondition a, XMASCondition b) throws ConditionNotPossible {
 		XMASCondition result = new XMASCondition();
 		for (char c : RATIINGS) {
@@ -106,10 +94,8 @@ public class XMASCondition implements Comparable<XMASCondition> {
 		return builder.toString();
 	}
 
-	public long getPosibilitesCount() {
-		long r = conditions.stream().map(Condition::getRange).reduce(1L, (a, b) -> a * b);
-		// System.out.println(this + " posibilities: " + r);
-		return r;
+	public long countPosibilites() {
+		return conditions.stream().map(Condition::getRange).reduce(1L, (a, b) -> a * b);
 	}
 
 }

@@ -7,7 +7,6 @@ public class Path {
 
 	public List<String> names = new ArrayList<>();
 	List<XMASCondition> p = new ArrayList<>();
-	public XMASCondition aggregated;
 
 	public void add(XMASCondition outcome, String name) {
 		p.add(outcome);
@@ -33,10 +32,10 @@ public class Path {
 		return builder.toString();
 	}
 
-	public Path aggregate() {
+	public XMASCondition aggregate() {
 		// System.out.println("Aggregating path: " + names);
 		// p.stream().forEach(a -> System.out.println("\t" + a));
-		aggregated = p.stream().reduce((t, u) -> {
+		return p.stream().reduce((t, u) -> {
 			try {
 				return XMASCondition.mergeAnd(t, u);
 			} catch (ConditionNotPossible e) {
@@ -45,7 +44,6 @@ public class Path {
 			}
 		}).get();
 		// System.out.println(" =>" + r);
-		return this;
 	}
 
 }

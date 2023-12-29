@@ -2,7 +2,6 @@ package aoc.year2023.day19;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,45 +22,6 @@ public class Workflow {
 		this.instructions = instructions.split(",");
 
 		loadPossibleOutcomes();
-
-		boolean optionalMergingEnabled = true;
-		if (optionalMergingEnabled) {
-			optionalMergeStep();
-		}
-
-		// System.out.println(this);
-
-	}
-
-	private void optionalMergeStep() {
-		for (List<XMASCondition> a : outcomes.values()) {
-			if (a.size() > 1) {
-				Collections.sort(a);
-				XMASCondition b = tryTomergeOr(a);
-				if (b != null) {
-					// System.out.println("\tMerged:\t" + b);
-					a.clear();
-					a.add(b);
-				}
-
-			}
-		}
-	}
-
-	private XMASCondition tryTomergeOr(List<XMASCondition> a) {
-		try {
-			return a.stream().reduce(new XMASCondition(), (t, u) -> {
-				try {
-					return XMASCondition.mergeOr(t, u);
-				} catch (ConditionNotPossible | NullPointerException e) {
-					throw new IllegalStateException("Cannot merge :" + a + " due to: " + e.getMessage());
-				}
-			});
-		} catch (Exception e) {
-			// System.out.println("No merging, there will be multiple XMAS condition for
-			// same result: " + e.getMessage());
-			return null;
-		}
 
 	}
 
