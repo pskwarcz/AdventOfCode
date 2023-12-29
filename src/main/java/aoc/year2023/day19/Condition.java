@@ -9,7 +9,7 @@ public class Condition implements Comparable<Condition> {
 	final int max;
 	public final char c;
 
-	public Condition(int min, int max, char c) {
+	private Condition(int min, int max, char c) {
 		super();
 		this.min = min;
 		this.max = max;
@@ -34,6 +34,10 @@ public class Condition implements Comparable<Condition> {
 		}
 	}
 
+	public static Condition maxCondition(char c) {
+		return new Condition(MIN, MAX, c);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -54,18 +58,25 @@ public class Condition implements Comparable<Condition> {
 		return new Condition(MIN, min - 1, c);
 	}
 
-	public Condition or(Condition c2) {
+	public Condition or(Condition c2) throws ConditionNotPossible {
+		if (c2 == null) {
+			return this;
+		}
 		if (max + 1 == c2.min || c2.max + 1 == min) {
 			return new Condition(Math.min(min, c2.min), Math.max(max, c2.max), c);
 		} else if (max >= c2.min) {
 			return new Condition(min, c2.max, c);
 		}
 		// System.err.println("unsupported OR: " + this + " OR " + c2);
-		throw new UnsupportedOperationException("unsupported OR: " + this + " OR " + c2);
+		throw new ConditionNotPossible("unsupported OR: " + this + " OR " + c2);
 	}
 
-	public Condition and(Condition c2) {
-		return new Condition(Math.max(min, c2.min), Math.min(max, c2.max), c);
+	public Condition and(Condition c2) throws ConditionNotPossible {
+		Condition a = new Condition(Math.max(min, c2.min), Math.min(max, c2.max), c);
+		if (a.max < a.min) {
+			throw new ConditionNotPossible("both conditions cannot be met: " + this + " AND " + c2);
+		}
+		return a;
 	}
 
 	public Long getRange() {
