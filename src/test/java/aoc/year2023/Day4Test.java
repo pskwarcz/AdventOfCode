@@ -1,6 +1,7 @@
 package aoc.year2023;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class Day4Test {
 		List<String> lines = Utils.readFile("/aoc/year2023/input4");
 
 		long res = new Day4().process(lines);
-		assertEquals(res, 13);
+		assertThat(res, is(13L));
 	}
 
 	@Test
@@ -23,7 +24,7 @@ public class Day4Test {
 		List<String> lines = Utils.readFile("/aoc/year2023/input4");
 
 		long res = new Day4b().process(lines);
-		assertEquals(res, 30);
+		assertThat(res, is(30L));
 	}
 
 }

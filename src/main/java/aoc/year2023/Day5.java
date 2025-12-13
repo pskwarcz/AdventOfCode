@@ -26,8 +26,6 @@ public class Day5 {
 	}
 
 	long process(List<String> lines) {
-		long sum = 0;
-
 		Iterator<String> l = lines.iterator();
 		String[] src = l.next().split(":")[1].trim().split(" ");
 		long[] s = toNumbers(src);

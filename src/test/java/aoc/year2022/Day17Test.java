@@ -1,12 +1,13 @@
-package aoc;
+package aoc.year2022;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import aoc.year2022.Day17;
+import aoc.Utils;
 
 public class Day17Test {
 
@@ -18,7 +19,7 @@ public class Day17Test {
 		Day17.n = 2022;
 
 		long heuight = sut.start(lines);
-		assertEquals(3068L, heuight);
+		assertThat(heuight, is(3068L));
 	}
 
 	@Test
@@ -27,7 +28,7 @@ public class Day17Test {
 		Day17.n = 2022;
 
 		long heuight = sut.start(lines);
-		assertEquals(3219L, heuight);
+		assertThat(heuight, is(3219L));
 	}
 
 	@Test
@@ -36,7 +37,7 @@ public class Day17Test {
 		Day17.n = 1000000000000L;
 
 		long heuight = sut.start(lines);
-		assertEquals(1514285714288L, heuight);
+		assertThat(heuight, is(1514285714288L));
 	}
 
 	@Test
@@ -45,7 +46,7 @@ public class Day17Test {
 		Day17.n = 1000000000000L;
 
 		long heuight = sut.start(lines);
-		assertEquals(1582758620701L, heuight);
+		assertThat(heuight, is(1582758620701L));
 	}
 
 }

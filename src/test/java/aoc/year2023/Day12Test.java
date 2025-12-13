@@ -1,6 +1,7 @@
 package aoc.year2023;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class Day12Test {
 		List<String> lines = Utils.readFile("/aoc/year2023/input12.txt");
 
 		long res = new Day12().process(lines);
-		assertEquals(21, res);
+		assertThat(res, is(21L));
 	}
 
 	@Test
@@ -26,7 +27,7 @@ public class Day12Test {
 		int[] info = d.readInfo(line);
 
 		long res = new Day12().countSolutions(pattern, info, 0, 0);
-		assertEquals(3, res);
+		assertThat(res, is(3L));
 	}
 
 	@Test
@@ -37,7 +38,7 @@ public class Day12Test {
 		int[] info = d.readInfo(line);
 
 		long res = new Day12().countSolutions(pattern, info, 0, 0);
-		assertEquals(4, res);
+		assertThat(res, is(4L));
 	}
 
 	@Test
@@ -48,7 +49,7 @@ public class Day12Test {
 		int[] info = d.readInfo(line);
 
 		long res = new Day12().countSolutions(pattern, info, 0, 0);
-		assertEquals(1, res);
+		assertThat(res, is(1L));
 	}
 
 	@Test
@@ -57,12 +58,12 @@ public class Day12Test {
 
 		Day12b d = new Day12b();
 
-		assertEquals(1, d.countArrangements(lines.get(0)));
-		assertEquals(16384, d.countArrangements(lines.get(1)));
-		assertEquals(1, d.countArrangements(lines.get(2)));
-		assertEquals(16, d.countArrangements(lines.get(3)));
-		assertEquals(2500, d.countArrangements(lines.get(4)));
-		assertEquals(506250, d.countArrangements(lines.get(5)));
+		assertThat(d.countArrangements(lines.get(0)), is(1L));
+		assertThat(d.countArrangements(lines.get(1)), is(16384L));
+		assertThat(d.countArrangements(lines.get(2)), is(1L));
+		assertThat(d.countArrangements(lines.get(3)), is(16L));
+		assertThat(d.countArrangements(lines.get(4)), is(2500L));
+		assertThat(d.countArrangements(lines.get(5)), is(506250L));
 	}
 
 	@Test
@@ -70,13 +71,13 @@ public class Day12Test {
 		List<String> lines = Utils.readFile("/aoc/year2023/input12.txt");
 
 		long res = new Day12b().process(lines);
-		assertEquals(525152, res);
+		assertThat(res, is(525152L));
 	}
 
 	@Test
 	public void part2solutions2long() {
 		Day12b d = new Day12b();
-		assertEquals(2189421, d.countArrangements("???#???????????# 5,1,1,2,1"));
+		assertThat(d.countArrangements("???#???????????# 5,1,1,2,1"), is(2189421L));
 	}
 
 }
