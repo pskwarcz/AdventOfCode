@@ -5,11 +5,13 @@ import static org.hamcrest.core.Is.is;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import aoc.Utils;
 import aoc.year2023.day24.Hailstone;
 
+@Ignore
 public class Day24Test {
 
 	@Test

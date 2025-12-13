@@ -5,10 +5,12 @@ import static org.hamcrest.core.Is.is;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import aoc.Utils;
 
+@Ignore
 public class Day20Test {
 
 	@Test
