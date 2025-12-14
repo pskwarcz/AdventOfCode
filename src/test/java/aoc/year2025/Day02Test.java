@@ -28,6 +28,5 @@ class Day02Test {
         assertThat(res, is(4174379265L));
     }
 
-
 }
 

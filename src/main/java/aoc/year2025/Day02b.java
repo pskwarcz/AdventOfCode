@@ -1,13 +1,10 @@
 package aoc.year2025;
 
-import aoc.Utils;
+import java.util.stream.IntStream;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.LongStream;
+public class Day02b extends Day02 {
 
-public class Day02b {
-
+    @Override
     void main() {
         long start = System.currentTimeMillis();
         new Day02b().start();
@@ -16,48 +13,11 @@ public class Day02b {
         System.out.println("\nTime[ms]: " + duration);
     }
 
-    private void start() {
-        List<String> lines = Utils.readFile("/aoc/year2025/input02");
-
-        long result = process(lines);
-
-        System.out.println("\nresult: " + result);
-    }
-
-    long process(List<String> lines) {
-        return lines.stream()
-                .flatMap(line -> Arrays.stream(line.split(",")))
-                .flatMapToLong(this::getInvalidIDs)
-                .sum();
-    }
-
-    private LongStream getInvalidIDs(String p) {
-
-        String[] range = p.split("-");
-        long start = Long.parseLong(range[0]);
-        long end = Long.parseLong(range[1]);
-
-        LongStream.Builder b = LongStream.builder();
-
-        for (long l = start; l <= end; l++) {
-            if (isInvalidId(l)) {
-                b.add(l);
-            }
-        }
-
-        return b.build();
-    }
-
-    private boolean isInvalidId(long l) {
+    @Override
+    boolean isInvalidId(long l) {
         String s = Long.toString(l);
 
-        for (int i = 1; i <= s.length() / 2; i++) {
-            if (isInvalidId(s, i)) {
-                return true;
-            }
-        }
-
-        return false;
+        return IntStream.rangeClosed(1, s.length() / 2).anyMatch(i -> isInvalidId(s, i));
     }
 
     private boolean isInvalidId(String s, int sequenceLength) {
@@ -72,7 +32,6 @@ public class Day02b {
                 return false;
             }
         }
-        // IO.println("left: " + left + " right: " + right);
         return true;
     }
 
