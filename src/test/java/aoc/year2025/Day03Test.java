@@ -20,13 +20,32 @@ class Day03Test {
     }
 
     @Test
-    void testPart1() {
+    void testPart1Real() {
         List<String> lines = Utils.readFile("/aoc/year2025/input03");
 
         long res = new Day03().process(lines);
 
         assertThat(res, is(17343L));
     }
+
+    @Test
+    void testDataPart2() {
+        List<String> lines = Utils.readFile("/aoc/year2025/testInput03");
+
+        long res = new Day03b().process(lines);
+
+        assertThat(res, is(3121910778619L));
+    }
+
+    @Test
+    void testDataPart2Real() {
+        List<String> lines = Utils.readFile("/aoc/year2025/input03");
+
+        long res = new Day03b().process(lines);
+
+        assertThat(res, is(172664333119298L));
+    }
+
 
 }
 
