@@ -19,6 +19,15 @@ class Day02Test {
         assertThat(res, is(1227775554L));
     }
 
+    @Test
+    void testPart2() {
+        List<String> lines = Utils.readFile("/aoc/year2025/testInput02");
+
+        long res = new Day02b().process(lines);
+
+        assertThat(res, is(4174379265L));
+    }
+
 
 }
 
