@@ -136,18 +136,5 @@ class Day01Test {
         );
     }
 
-    @Test
-    void calculate() {
-        int c;
-
-        c = -1 % 100;
-        IO.println(c);
-
-        c = -50 % 100;
-        IO.println(c);
-
-        c = -100 % 100;
-        IO.println(c);
-    }
 }
 

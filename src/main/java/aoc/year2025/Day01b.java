@@ -30,7 +30,6 @@ public class Day01b {
         for (String l : lines) {
             int s = getSpin(l);
             w.spin(s);
-            IO.println(s + " " + w);
         }
         return w.countZero;
     }
