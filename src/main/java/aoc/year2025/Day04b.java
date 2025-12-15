@@ -13,25 +13,34 @@ public class Day04b extends Day04 {
     }
 
     long process(List<String> lines) {
-        int count = 0;
-        int linesCount = lines.size();
-        int colsCount = lines.getFirst().length();
+        int rows = lines.size();
+        int cols = lines.getFirst().length();
 
-        boolean removed;
+        int count = 0;
+        boolean anyChange;
+
         do {
-            removed = false;
-            for (int row = 0; row < linesCount; row++) {
-                for (int col = 0; col < colsCount; col++) {
-                    if (ROLL == lines.get(row).charAt(col) && isRollAccessible(row, col, lines)) {
-                        StringBuilder sb = new StringBuilder(lines.get(row));
-                        sb.setCharAt(col, 'x');
-                        lines.set(row, sb.toString());
-                        removed = true;
-                        count++;
-                    }
+            anyChange = false;
+
+            for (int row = 0; row < rows; row++) {
+                char[] chars = lines.get(row).toCharArray();
+                boolean changed = false;
+
+                for (int col = 0; col < cols; col++) {
+                    if (ROLL != chars[col]) continue;
+                    if (!isRollAccessible(row, col, lines)) continue;
+
+                    chars[col] = 'x';
+                    count++;
+                    changed = true;
+                }
+
+                if (changed) {
+                    lines.set(row, new String(chars));
+                    anyChange = true;
                 }
             }
-        } while (removed);
+        } while (anyChange);
         return count;
     }
 
