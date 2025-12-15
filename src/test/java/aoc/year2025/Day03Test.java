@@ -14,7 +14,7 @@ class Day03Test {
     void testDataPart1() {
         List<String> lines = Utils.readFile("/aoc/year2025/testInput03");
 
-        long res = new Day03().process(lines);
+        long res = new Day03(2).process(lines);
 
         assertThat(res, is(357L));
     }
@@ -23,7 +23,7 @@ class Day03Test {
     void testPart1Real() {
         List<String> lines = Utils.readFile("/aoc/year2025/input03");
 
-        long res = new Day03().process(lines);
+        long res = new Day03(2).process(lines);
 
         assertThat(res, is(17343L));
     }
@@ -32,7 +32,7 @@ class Day03Test {
     void testDataPart2() {
         List<String> lines = Utils.readFile("/aoc/year2025/testInput03");
 
-        long res = new Day03b().process(lines);
+        long res = new Day03(12).process(lines);
 
         assertThat(res, is(3121910778619L));
     }
@@ -41,7 +41,7 @@ class Day03Test {
     void testDataPart2Real() {
         List<String> lines = Utils.readFile("/aoc/year2025/input03");
 
-        long res = new Day03b().process(lines);
+        long res = new Day03(12).process(lines);
 
         assertThat(res, is(172664333119298L));
     }
