@@ -46,7 +46,7 @@ class Day07Test {
 
         long res = new Day07b().process(lines);
 
-        assertThat(res, is(1516L));
+        assertThat(res, is(1393669447690L));
     }
 }
 
