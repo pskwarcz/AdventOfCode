@@ -14,13 +14,13 @@ public class Day05b {
         new Day05b().start();
         long end = System.currentTimeMillis();
         long duration = end - start;
-        System.out.println("\nTime[ms]: " + duration);
+        IO.println("\nTime[ms]: " + duration);
     }
 
     void start() {
         List<String> lines = Utils.readFile("/aoc/year2025/input05");
         long result = process(lines);
-        System.out.println("\nresult: " + result);
+        IO.println("\nresult: " + result);
     }
 
     long process(List<String> lines) {
@@ -46,7 +46,6 @@ public class Day05b {
                 }
             }
             merged.add(r);
-            IO.println(merged);
         }
 
         return merged.stream().mapToLong(Range::size).sum();
@@ -59,18 +58,9 @@ public class Day05b {
             }
         }
 
-        @Override
-        public String toString() {
-            return "(" + start + " - " + end + ')';
-        }
-
         public Range(String line) {
             String[] l = line.split("-");
             this(Long.parseLong(l[0]), Long.parseLong(l[1]));
-        }
-
-        boolean contains(long value) {
-            return value >= start && value <= end;
         }
 
         public long size() {
@@ -78,9 +68,7 @@ public class Day05b {
         }
 
         public Range mergeWith(Range r) {
-            Range merged = new Range(Math.min(r.start, this.start), Math.max(r.end, this.end));
-            IO.println("\t Merging: " + this.toString() + " + " + r + " = " + merged);
-            return merged;
+            return new Range(Math.min(r.start, this.start), Math.max(r.end, this.end));
         }
 
         public boolean overlaps(Range m) {
