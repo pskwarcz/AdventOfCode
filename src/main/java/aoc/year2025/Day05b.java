@@ -61,7 +61,7 @@ public class Day05b {
 
         @Override
         public String toString() {
-            return "(" + start + "-" + end + ')';
+            return "(" + start + " - " + end + ')';
         }
 
         public Range(String line) {
@@ -84,7 +84,7 @@ public class Day05b {
         }
 
         public boolean overlaps(Range m) {
-            return contains(m.start()) || contains(m.end());
+            return this.start() <= m.end() && m.start() <= this.end();
         }
     }
 

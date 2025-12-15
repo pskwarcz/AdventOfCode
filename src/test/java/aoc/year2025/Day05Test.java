@@ -48,6 +48,9 @@ class Day05Test {
         long res = new Day05b().process(lines);
 
         assertThat(res, not(is(357537524174696L))); // too high
+        assertThat(res, is(352340558684863L));
+
     }
+
 }
 
