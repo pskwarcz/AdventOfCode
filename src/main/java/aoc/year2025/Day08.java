@@ -6,9 +6,9 @@ import java.util.*;
 
 public class Day08 {
 
-    static long start = System.currentTimeMillis();
+    long start = System.currentTimeMillis();
 
-    static private void logTime() {
+    void logTime() {
         long end = System.currentTimeMillis();
         long duration = end - start;
         IO.println("\nTime[ms]: " + duration);
@@ -16,10 +16,9 @@ public class Day08 {
 
     static void main() {
         new Day08(1000).start();
-        logTime();
     }
 
-    final int MAX_CONNECTIONS;
+    int MAX_CONNECTIONS;
 
     Day08(int connections) {
         this.MAX_CONNECTIONS = connections;
@@ -29,16 +28,16 @@ public class Day08 {
         List<String> lines = Utils.readFile("/aoc/year2025/input08");
         long result = process(lines);
         IO.println("\nresult: " + result);
+        logTime();
     }
 
-    static List<Box> boxes;
+    List<Box> boxes;
 
     // keys are distances between boxes in square
-    static Map<Long, Set<Box>> distances = new TreeMap<>();
+    Map<Long, Set<Box>> distances = new TreeMap<>();
 
     long process(List<String> lines) {
         boxes = lines.stream().map(Box::new).toList();
-        logTime();
 
         for (int i = 0; i < boxes.size() - 1; i++) {
             for (int j = i + 1; j < boxes.size(); j++) {
@@ -51,10 +50,12 @@ public class Day08 {
         }
         logTime();
 
+        return calculateResult();
+    }
+
+    int calculateResult() {
         // distances is ordered by key=distance, so we start with the shortest ones
         distances.entrySet().stream().limit(MAX_CONNECTIONS).forEach(es -> connectBoxes(es.getValue()));
-
-        logTime();
 
         //IO.println();
         // boxes.stream().forEach(b -> IO.println(b + "\t c.size:" + b.cluster.size() + "\t hash: " + b.cluster.hashCode() + " " + b.cluster));
@@ -67,7 +68,7 @@ public class Day08 {
                 .orElseThrow();
     }
 
-    private void connectBoxes(Set<Box> value) {
+    void connectBoxes(Set<Box> value) {
         if (value.size() != 2) {
             throw new IllegalArgumentException("Unexpected size " + value);
         }
@@ -84,7 +85,7 @@ public class Day08 {
         b.cluster = a.cluster;
     }
 
-    static class Box {
+    class Box {
         int x;
         int y;
         int z;
