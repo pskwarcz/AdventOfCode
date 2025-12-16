@@ -32,20 +32,23 @@ public class Day08 {
     }
 
     static List<Box> boxes;
+
+    // keys are distances between boxes in square
     static Map<Long, Set<Box>> distances = new TreeMap<>();
 
     long process(List<String> lines) {
         boxes = lines.stream().map(Box::new).toList();
         logTime();
 
-        for (Box a : boxes) {
-            for (Box b : boxes) {
-                if (a != b) {
-                    a.calculateDistanceTo(b);
-                }
+        for (int i = 0; i < boxes.size() - 1; i++) {
+            for (int j = i + 1; j < boxes.size(); j++) {
+                boxes.get(i).calculateDistanceTo(boxes.get(j));
             }
         }
-
+        IO.println("Total possible connections: " + distances.size());
+        if (distances.values().stream().map(Set::size).anyMatch(s -> s != 2)) {
+            throw new UnsupportedOperationException("Current logic do not support situation where there might be exactly same distance between more boxes");
+        }
         logTime();
 
         // distances is ordered by key=distance, so we start with the shortest ones
@@ -61,7 +64,7 @@ public class Day08 {
                 .map(i -> -i) //flip back
                 .limit(3) // get 3 biggest circuits
                 .reduce((x, y) -> x * y)
-                .getAsInt();
+                .orElseThrow();
     }
 
     private void connectBoxes(Set<Box> value) {
@@ -88,22 +91,15 @@ public class Day08 {
 
         Set<Box> cluster = new HashSet<>();
 
-        Map<Box, Long> distanceMap = new HashMap<>();
-
         Box(String line) {
             x = Integer.parseInt(line.split(",")[0]);
             y = Integer.parseInt(line.split(",")[1]);
             z = Integer.parseInt(line.split(",")[2]);
         }
 
-        void setDistance(Box to, long value) {
-            distanceMap.put(to, value);
-        }
-
         public void calculateDistanceTo(Box b) {
             // distance will be used just for comparing, so we do not need to calculate root
-            long distance = distanceMap.computeIfAbsent(b, _ -> (long) Math.pow(b.x - x, 2) + (long) Math.pow(b.y - y, 2) + (long) Math.pow(b.z - z, 2));
-            b.setDistance(this, distance);
+            long distance = (long) Math.pow(b.x - x, 2) + (long) Math.pow(b.y - y, 2) + (long) Math.pow(b.z - z, 2);
             Set<Box> boxes = distances.computeIfAbsent(distance, _ -> new HashSet<>());
             boxes.add(this);
             boxes.add(b);
@@ -123,7 +119,7 @@ public class Day08 {
 
         @Override
         public String toString() {
-            return "(" + +x + "," + y + "," + z + ')';
+            return "(" + x + "," + y + "," + z + ')';
         }
     }
 
