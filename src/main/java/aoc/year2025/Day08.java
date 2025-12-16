@@ -18,18 +18,19 @@ public class Day08 {
         new Day08(1000).start();
     }
 
-    int MAX_CONNECTIONS;
-
-    Day08(int connections) {
-        this.MAX_CONNECTIONS = connections;
-    }
-
     void start() {
         List<String> lines = Utils.readFile("/aoc/year2025/input08");
         long result = process(lines);
         IO.println("\nresult: " + result);
         logTime();
     }
+
+    int MAX_CONNECTIONS;
+
+    Day08(int connections) {
+        this.MAX_CONNECTIONS = connections;
+    }
+
 
     List<Box> boxes;
 
@@ -44,11 +45,9 @@ public class Day08 {
                 boxes.get(i).calculateDistanceTo(boxes.get(j));
             }
         }
-        IO.println("Total possible connections: " + distances.size());
         if (distances.values().stream().map(Set::size).anyMatch(s -> s != 2)) {
             throw new UnsupportedOperationException("Current logic do not support situation where there might be exactly same distance between more boxes");
         }
-        logTime();
 
         return calculateResult();
     }
@@ -69,9 +68,7 @@ public class Day08 {
     }
 
     void connectBoxes(Set<Box> value) {
-        if (value.size() != 2) {
-            throw new IllegalArgumentException("Unexpected size " + value);
-        }
+        assert value.size() == 2;
         Iterator<Box> it = value.iterator();
         Box a = it.next();
         Box b = it.next();

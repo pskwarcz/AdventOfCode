@@ -1,7 +1,6 @@
 package aoc.year2025;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 public class Day08b extends Day08 {
@@ -15,17 +14,16 @@ public class Day08b extends Day08 {
     }
 
     int calculateResult() {
-        // distances is ordered by key=distance, so we start with the shortest ones
         Box first = boxes.getFirst();
 
-        Iterator<Map.Entry<Long, Set<Box>>> iterator = distances.entrySet().iterator();
-        Map.Entry<Long, Set<Box>> es = null;
-        while (first.cluster.size() != boxes.size()) {
-            es = iterator.next();
-            connectBoxes(es.getValue());
+        Iterator<Set<Box>> iterator = distances.values().iterator();
+        Set<Box> boxes = null;
+        while (first.cluster.size() != this.boxes.size()) {
+            boxes = iterator.next();
+            connectBoxes(boxes);
         }
-        assert es != null;
-        return es.getValue().stream().map(b -> b.x).reduce((x, y) -> x * y).orElseThrow();
+        assert boxes != null;
+        return boxes.stream().map(b -> b.x).reduce((x, y) -> x * y).orElseThrow();
     }
 
 
