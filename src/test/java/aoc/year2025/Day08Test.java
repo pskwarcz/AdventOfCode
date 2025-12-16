@@ -31,6 +31,23 @@ class Day08Test {
         assertThat(res, is(131580L));
     }
 
+    @Test
+    void testDataPart2() {
+        List<String> lines = Utils.readFile(TEST_INPUT);
+
+        long res = new Day08b().process(lines);
+
+        assertThat(res, is(25272L));
+    }
+
+    @Test
+    void testRealDataPart2() {
+        List<String> lines = Utils.readFile(INPUT);
+
+        long res = new Day08b().process(lines);
+
+        assertThat(res, is(6844224L));
+    }
 
 }
 
